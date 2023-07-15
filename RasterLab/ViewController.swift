@@ -9,10 +9,14 @@ import Cocoa
 
 class ViewController: NSViewController {
 
+    @IBOutlet weak var imageView: NSImageView!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // Do any additional setup after loading the view.
+        renderer.render()
+        let img = Images.cgImageSRGB(renderer.pixels, w: renderer.w, h: renderer.h, pixelSize: 4)
+        imageView.image = NSImage(cgImage: img, size: NSSize(width: renderer.w, height: renderer.h))
     }
 
     override var representedObject: Any? {
@@ -20,7 +24,6 @@ class ViewController: NSViewController {
         // Update the view, if already loaded.
         }
     }
-
 
 }
 

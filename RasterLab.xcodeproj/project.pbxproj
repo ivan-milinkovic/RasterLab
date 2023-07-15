@@ -11,7 +11,22 @@
 		2CA08AE52A632789005E14C5 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CA08AE42A632789005E14C5 /* ViewController.swift */; };
 		2CA08AE72A63278A005E14C5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2CA08AE62A63278A005E14C5 /* Assets.xcassets */; };
 		2CA08AEA2A63278A005E14C5 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2CA08AE82A63278A005E14C5 /* Main.storyboard */; };
+		2CA08AF22A632824005E14C5 /* Matrix.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CA08AF12A632824005E14C5 /* Matrix.swift */; };
+		2CA08AFA2A632B7C005E14C5 /* RasterLabTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CA08AF92A632B7C005E14C5 /* RasterLabTests.swift */; };
+		2CA08B032A633631005E14C5 /* geometry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CA08B002A6335A0005E14C5 /* geometry.swift */; };
+		2CA08B052A633A68005E14C5 /* Images.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CA08B042A633A68005E14C5 /* Images.swift */; };
+		2CA08B072A633A8B005E14C5 /* Renderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CA08B062A633A8B005E14C5 /* Renderer.swift */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		2CA08AFB2A632B7C005E14C5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 2CA08AD72A632789005E14C5 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 2CA08ADE2A632789005E14C5;
+			remoteInfo = RasterLab;
+		};
+/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		2CA08ADF2A632789005E14C5 /* RasterLab.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RasterLab.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -20,10 +35,23 @@
 		2CA08AE62A63278A005E14C5 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		2CA08AE92A63278A005E14C5 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		2CA08AEB2A63278A005E14C5 /* RasterLab.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = RasterLab.entitlements; sourceTree = "<group>"; };
+		2CA08AF12A632824005E14C5 /* Matrix.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Matrix.swift; sourceTree = "<group>"; };
+		2CA08AF72A632B7C005E14C5 /* RasterLabTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RasterLabTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		2CA08AF92A632B7C005E14C5 /* RasterLabTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RasterLabTests.swift; sourceTree = "<group>"; };
+		2CA08B002A6335A0005E14C5 /* geometry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = geometry.swift; sourceTree = "<group>"; };
+		2CA08B042A633A68005E14C5 /* Images.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Images.swift; sourceTree = "<group>"; };
+		2CA08B062A633A8B005E14C5 /* Renderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Renderer.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		2CA08ADC2A632789005E14C5 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		2CA08AF42A632B7C005E14C5 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -37,6 +65,7 @@
 			isa = PBXGroup;
 			children = (
 				2CA08AE12A632789005E14C5 /* RasterLab */,
+				2CA08AF82A632B7C005E14C5 /* RasterLabTests */,
 				2CA08AE02A632789005E14C5 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -45,6 +74,7 @@
 			isa = PBXGroup;
 			children = (
 				2CA08ADF2A632789005E14C5 /* RasterLab.app */,
+				2CA08AF72A632B7C005E14C5 /* RasterLabTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -54,11 +84,23 @@
 			children = (
 				2CA08AE22A632789005E14C5 /* AppDelegate.swift */,
 				2CA08AE42A632789005E14C5 /* ViewController.swift */,
+				2CA08B062A633A8B005E14C5 /* Renderer.swift */,
+				2CA08AF12A632824005E14C5 /* Matrix.swift */,
+				2CA08B002A6335A0005E14C5 /* geometry.swift */,
+				2CA08B042A633A68005E14C5 /* Images.swift */,
 				2CA08AE62A63278A005E14C5 /* Assets.xcassets */,
 				2CA08AE82A63278A005E14C5 /* Main.storyboard */,
 				2CA08AEB2A63278A005E14C5 /* RasterLab.entitlements */,
 			);
 			path = RasterLab;
+			sourceTree = "<group>";
+		};
+		2CA08AF82A632B7C005E14C5 /* RasterLabTests */ = {
+			isa = PBXGroup;
+			children = (
+				2CA08AF92A632B7C005E14C5 /* RasterLabTests.swift */,
+			);
+			path = RasterLabTests;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -81,6 +123,24 @@
 			productReference = 2CA08ADF2A632789005E14C5 /* RasterLab.app */;
 			productType = "com.apple.product-type.application";
 		};
+		2CA08AF62A632B7C005E14C5 /* RasterLabTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 2CA08AFD2A632B7C005E14C5 /* Build configuration list for PBXNativeTarget "RasterLabTests" */;
+			buildPhases = (
+				2CA08AF32A632B7C005E14C5 /* Sources */,
+				2CA08AF42A632B7C005E14C5 /* Frameworks */,
+				2CA08AF52A632B7C005E14C5 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				2CA08AFC2A632B7C005E14C5 /* PBXTargetDependency */,
+			);
+			name = RasterLabTests;
+			productName = RasterLabTests;
+			productReference = 2CA08AF72A632B7C005E14C5 /* RasterLabTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -93,6 +153,10 @@
 				TargetAttributes = {
 					2CA08ADE2A632789005E14C5 = {
 						CreatedOnToolsVersion = 14.3.1;
+					};
+					2CA08AF62A632B7C005E14C5 = {
+						CreatedOnToolsVersion = 14.3.1;
+						TestTargetID = 2CA08ADE2A632789005E14C5;
 					};
 				};
 			};
@@ -110,6 +174,7 @@
 			projectRoot = "";
 			targets = (
 				2CA08ADE2A632789005E14C5 /* RasterLab */,
+				2CA08AF62A632B7C005E14C5 /* RasterLabTests */,
 			);
 		};
 /* End PBXProject section */
@@ -124,6 +189,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		2CA08AF52A632B7C005E14C5 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -131,12 +203,32 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2CA08B032A633631005E14C5 /* geometry.swift in Sources */,
 				2CA08AE52A632789005E14C5 /* ViewController.swift in Sources */,
+				2CA08B052A633A68005E14C5 /* Images.swift in Sources */,
 				2CA08AE32A632789005E14C5 /* AppDelegate.swift in Sources */,
+				2CA08B072A633A8B005E14C5 /* Renderer.swift in Sources */,
+				2CA08AF22A632824005E14C5 /* Matrix.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		2CA08AF32A632B7C005E14C5 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2CA08AFA2A632B7C005E14C5 /* RasterLabTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		2CA08AFC2A632B7C005E14C5 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 2CA08ADE2A632789005E14C5 /* RasterLab */;
+			targetProxy = 2CA08AFB2A632B7C005E14C5 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		2CA08AE82A63278A005E14C5 /* Main.storyboard */ = {
@@ -313,6 +405,38 @@
 			};
 			name = Release;
 		};
+		2CA08AFE2A632B7C005E14C5 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.ivanmcode.RasterLabTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/RasterLab.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/RasterLab";
+			};
+			name = Debug;
+		};
+		2CA08AFF2A632B7C005E14C5 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.ivanmcode.RasterLabTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/RasterLab.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/RasterLab";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -330,6 +454,15 @@
 			buildConfigurations = (
 				2CA08AEF2A63278A005E14C5 /* Debug */,
 				2CA08AF02A63278A005E14C5 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		2CA08AFD2A632B7C005E14C5 /* Build configuration list for PBXNativeTarget "RasterLabTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				2CA08AFE2A632B7C005E14C5 /* Debug */,
+				2CA08AFF2A632B7C005E14C5 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
