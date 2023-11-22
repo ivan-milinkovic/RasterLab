@@ -7,6 +7,13 @@ struct Pixel {
     var b: UInt8 = 0
     var a: UInt8 = 255
     
+    init() {
+        r = 0
+        g = 0
+        b = 0
+        a = 1
+    }
+    
     init(r: UInt8 = 0, g: UInt8 = 0, b: UInt8 = 0) {
         self.r = r
         self.g = g
@@ -22,6 +29,15 @@ struct Pixel {
     
     init(white: Double) {
         self.init(r: UInt8(white * 255), g: UInt8(white * 255), b: UInt8(white * 255))
+    }
+}
+
+extension Pixel: ExpressibleByArrayLiteral {
+    init(arrayLiteral els: Float...) {
+        precondition(els.count>=3)
+        r = UInt8(els[0])
+        g = UInt8(els[1])
+        b = UInt8(els[2])
     }
 }
 
