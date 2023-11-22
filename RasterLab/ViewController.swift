@@ -19,11 +19,4 @@ class ViewController: NSViewController {
         imageView.image = NSImage(cgImage: img, size: NSSize(width: renderer.w, height: renderer.h))
     }
 
-    override var representedObject: Any? {
-        didSet {
-        // Update the view, if already loaded.
-        }
-    }
-
 }
-

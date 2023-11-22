@@ -92,14 +92,11 @@ class Renderer {
                     let bw1 = w1 / area
                     let bw2 = w2 / area
                     
-                    var r = bw0 * Float(tc[0].r) + bw1 * Float(tc[1].r) + bw2 * Float(tc[2].r)
-                    var g = bw0 * Float(tc[0].g) + bw1 * Float(tc[1].g) + bw2 * Float(tc[2].g)
-                    var b = bw0 * Float(tc[0].b) + bw1 * Float(tc[1].b) + bw2 * Float(tc[2].b)
-                    r *= 255
-                    g *= 255
-                    b *= 255
+                    let r = bw0 * Float(tc[0].r) + bw1 * Float(tc[1].r) + bw2 * Float(tc[2].r)
+                    let g = bw0 * Float(tc[0].g) + bw1 * Float(tc[1].g) + bw2 * Float(tc[2].g)
+                    let b = bw0 * Float(tc[0].b) + bw1 * Float(tc[1].b) + bw2 * Float(tc[2].b)
                     let ip = iy*w + ix
-                    pixels[ip] = Pixel(r: UInt8(r), g: UInt8(g), b: UInt8(b))
+                    pixels[ip] = Pixel(r: UInt8(r*255), g: UInt8(g*255), b: UInt8(b*255))
                 }
             }
         }
