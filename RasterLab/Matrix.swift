@@ -39,33 +39,48 @@ func mult(_ m1: Matrix4, _ m2: Matrix4) -> Matrix4 {
                    m41: m41, m42: m42, m43: m43, m44: m44)
 }
 
-
-struct Mat4 {
-    let m: [Float] // row major
-    init() {
-        m = [Float].init(repeating: 0, count: 16)
-    }
-    init(_ ms: [Float]) {
-        m = ms
-    }
+struct Mat3 {
+    let m11, m12, m13,
+        m21, m22, m23,
+        m31, m32, m33
+        : Float
 }
 
-extension Mat4: Equatable { }
 
-func mult2(_ m1: Mat4, _ m2: Mat4) -> Mat4 {
-    var res = [Float](repeating: 0, count: 16)
-    // iterating the result indexes
-    var i=0; while i<16 { defer { i+=1 }
-        let row = i / 4
-        let col = i % 4
-        
-        let m1_offset = row * 4
-        var j=0; while j<4 { defer { j+=1 }
-            let m1_ind = m1_offset + j
-            let m2_ind = j*4 + col
-            
-            res[row*4 + col] += m1.m[m1_ind] * m2.m[m2_ind]
-        }
-    }
-    return Mat4(res)
+func *(v: Vec3, mat: Mat3) -> Vec3 {
+    let x = v.x * mat.m11  +  v.y * mat.m21  +  v.z * mat.m31
+    let y = v.x * mat.m12  +  v.y * mat.m22  +  v.z * mat.m32
+    let z = v.x * mat.m13  +  v.y * mat.m23  +  v.z * mat.m33
+    return Vec3(x, y, z)
 }
+
+
+//struct Mat4 {
+//    let m: [Float] // row major
+//    init() {
+//        m = [Float].init(repeating: 0, count: 16)
+//    }
+//    init(_ ms: [Float]) {
+//        m = ms
+//    }
+//}
+//
+//extension Mat4: Equatable { }
+//
+//func mult2(_ m1: Mat4, _ m2: Mat4) -> Mat4 {
+//    var res = [Float](repeating: 0, count: 16)
+//    // iterating the result indexes
+//    var i=0; while i<16 { defer { i+=1 }
+//        let row = i / 4
+//        let col = i % 4
+//        
+//        let m1_offset = row * 4
+//        var j=0; while j<4 { defer { j+=1 }
+//            let m1_ind = m1_offset + j
+//            let m2_ind = j*4 + col
+//            
+//            res[row*4 + col] += m1.m[m1_ind] * m2.m[m2_ind]
+//        }
+//    }
+//    return Mat4(res)
+//}

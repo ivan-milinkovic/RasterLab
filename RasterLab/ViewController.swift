@@ -13,9 +13,13 @@ class ViewController: NSViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
+//        imageView.wantsLayer = true
+//        imageView.layer?.borderWidth = 1
+//        imageView.layer?.borderColor = NSColor.purple.cgColor
+        
         renderer.render()
-        let img = Images.cgImageSRGB(renderer.pixels, w: renderer.w, h: renderer.h, pixelSize: 4)
+        let img = Images.cgImageSRGB(renderer.frameBuffer.pixels, w: renderer.w, h: renderer.h, pixelSize: 4)
         imageView.image = NSImage(cgImage: img, size: NSSize(width: renderer.w, height: renderer.h))
     }
 

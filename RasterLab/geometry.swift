@@ -9,6 +9,12 @@ class Geo {
         [0.0, 1.0, 1.0]
     ]
     
+    static let triangle2: [Vec3] = [
+        [ 0.0, 0.0, 0.0],
+        [ 0.5, 0.5, 0.0],
+        [-0.5, 0.5, 0.0]
+    ]
+    
     static let triangleColors: [Pixel] = [
         [1, 0, 0],
         [0, 1, 0],

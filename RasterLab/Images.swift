@@ -11,7 +11,7 @@ struct Pixel {
         r = 0
         g = 0
         b = 0
-        a = 1
+        a = 50
     }
     
     init(r: UInt8 = 0, g: UInt8 = 0, b: UInt8 = 0) {
@@ -56,5 +56,41 @@ class Images {
                             shouldInterpolate: false,
                             intent: CGColorRenderingIntent.defaultIntent)!
         return cgImage
+    }
+}
+
+class FrameBuffer {
+    var pixels: [Pixel]
+    let w: Int
+    let h: Int
+    
+    init(w: Int, h: Int) {
+        self.pixels = [Pixel].init(repeating: Pixel(), count: w*h)
+        self.w = w
+        self.h = h
+    }
+    
+    subscript(i: Int) -> Pixel {
+        get {
+            pixels[i]
+        }
+        set {
+            pixels[i] = newValue
+        }
+    }
+    
+    subscript(x: Int, y: Int) -> Pixel {
+        get {
+            let i = y*w + x
+            return pixels[i]
+        }
+        set {
+            if x < 0 || w <= x || y < 0 || h <= y {
+//                print("ignoring", x, y)
+                return
+            }
+            let i = y*w + x
+            pixels[i] = newValue
+        }
     }
 }

@@ -3,21 +3,138 @@ import Foundation
 let renderer = Renderer()
 
 class Renderer {
-    var pixels: [Pixel]
+    var frameBuffer: FrameBuffer
     let w = 200
     let h = 200
     
     init() {
-        pixels = [Pixel].init(repeating: Pixel(), count: w*h)
+        frameBuffer = FrameBuffer(w: w, h: h)
+        
     }
     
     func render() {
 //        let t0 = Date()
 //        renderBox()
-        renderTriangle()
+//        renderTriangle()
+//        fillEdges()
+        renderTriangle2()
 //        renderLine()
 //        let dt = Date().timeIntervalSince(t0)*1_000_000
 //        print("\(dt)us")
+    }
+    
+    func renderTriangle2() {
+        let t = Geo.triangle2
+        let tc = Geo.triangleColors
+        let wf = Float(w)
+        let hf = Float(h)
+        
+        var tv = t // tv - triangle in view space
+
+        tv = [Vec3]()
+        let radsInDeg = Float.pi / 180
+        let az = 20 * radsInDeg
+        let Rz = Mat3(m11:  cos(az), m12: sin(az), m13: 0,
+                      m21: -sin(az), m22: cos(az), m23: 0,
+                      m31: 0,        m32: 0,       m33: 1)
+        
+        let ay = 45 * radsInDeg
+        let Ry = Mat3(m11: cos(ay), m12: 0, m13: sin(ay),
+                      m21: 0,       m22: 1, m23: 0,
+                      m31: sin(ay), m32: 0, m33: cos(ay))
+        
+        let ax = 70 * radsInDeg
+        let Rx = Mat3(m11: 1, m12:  0,       m13: 0,
+                      m21: 0, m22:  cos(ax), m23: sin(ax),
+                      m31: 0, m32: -sin(ax), m33: cos(ax))
+        
+        for v in t {
+            var vv = v * Ry  // vertex in view space
+            vv = vv + Vec3(0.5, 0, 1)
+            tv.append(vv)
+        }
+        
+        // project triangle
+        var tp = [Vec3]() // triangle projected
+        tp.reserveCapacity(t.count)
+        for v in tv {
+            let z = v.z
+            let y = v.y / z
+            let x = v.x / z
+            
+            let xp = x*wf*0.98 // + wf*0.1
+            let yp = y*hf*0.98 // + hf*0.1
+            
+            let vp = Vec3(xp, yp, z)
+            tp.append(vp)
+        }
+        
+        // fill triangle
+        let area = abs(edgeFunction(tp[0], tp[1], tp[2]))
+        
+        // bounding box
+        let xmin = Int(min(tp[0].x, min(tp[1].x, tp[2].x)))
+        let ymin = Int(min(tp[0].y, min(tp[1].y, tp[2].y)))
+        let xmax = Int(max(tp[0].x, max(tp[1].x, tp[2].x)))
+        let ymax = Int(max(tp[0].y, max(tp[1].y, tp[2].y)))
+        for ix in xmin...xmax {
+            for iy in ymin...ymax {
+                // check if points are inside the triangle
+                let p = Vec3(Float(ix) + 0.5, Float(iy) + 0.5, 0)
+                let w0 = edgeFunction(tp[2], tp[1], p)
+                let w1 = edgeFunction(tp[0], tp[2], p)
+                let w2 = edgeFunction(tp[1], tp[0], p)
+                let isInside = w0>0 && w1>0 && w2>0
+                if isInside {
+                    // barycentric coordinates
+                    let bw0 = w0 / area
+                    let bw1 = w1 / area
+                    let bw2 = w2 / area
+                    
+                    // set pixel
+                    let r = bw0 * Float(tc[0].r) + bw1 * Float(tc[1].r) + bw2 * Float(tc[2].r)
+                    let g = bw0 * Float(tc[0].g) + bw1 * Float(tc[1].g) + bw2 * Float(tc[2].g)
+                    let b = bw0 * Float(tc[0].b) + bw1 * Float(tc[1].b) + bw2 * Float(tc[2].b)
+                    frameBuffer[ix, iy] = Pixel(r: UInt8(r*255), g: UInt8(g*255), b: UInt8(b*255))
+                }
+            }
+        }
+        
+        // draw edges - interpolate between projected vertices
+        for i in 0..<3 {
+            let v1 = tp[i]
+            let v2 = tp[(i+1)%3]
+            
+            let dx = v2.x - v1.x
+            let dy = v2.y - v1.y
+            let dist = sqrt(dx*dx + dy*dy)
+            
+            for step in stride(from: 0.0, through: dist, by: 1.0) {
+                let f = step/dist
+                let x_lerp = Int(v1.x + f * dx)
+                let y_lerp = Int(v1.y + f * dy)
+                frameBuffer[x_lerp, y_lerp] = Pixel(white: 0.5)
+            }
+        }
+        
+        // draw projected vertices
+        for vp in tp {
+            frameBuffer[Int(vp.x), Int(vp.y)] = Pixel(white: 1.0)
+        }
+    }
+    
+    func fillEdges() {
+        for x in 0..<w {
+            frameBuffer[x] = Pixel(white: 0.5)
+            let i = (h-1)*w + x
+            frameBuffer[i] = Pixel(white: 0.5)
+        }
+        for y in 0..<h {
+            var i = y*w + 0
+            frameBuffer[i] = Pixel(white: 0.5)
+            i = y*w + w-1
+            frameBuffer[i] = Pixel(white: 0.5)
+        }
     }
     
     func renderLine() {
@@ -26,8 +143,8 @@ class Renderer {
         
         let idx1 = Int(v1.y)*w + Int(v1.x)
         let idx2 = Int(v2.y)*w + Int(v2.x)
-        pixels[idx1] = Pixel(white: 1.0)
-        pixels[idx2] = Pixel(white: 1.0)
+        frameBuffer[idx1] = Pixel(white: 1.0)
+        frameBuffer[idx2] = Pixel(white: 1.0)
         
         let dx = v2.x - v1.x
         let dy = v2.y - v1.y
@@ -39,7 +156,7 @@ class Renderer {
             let y_lerp = v1.y + f * dy
             
             let idx = Int(y_lerp)*w + Int(x_lerp)
-            pixels[idx] = Pixel(white: 0.8)
+            frameBuffer[idx] = Pixel(white: 0.8)
         }
     }
     
@@ -96,7 +213,7 @@ class Renderer {
                     let g = bw0 * Float(tc[0].g) + bw1 * Float(tc[1].g) + bw2 * Float(tc[2].g)
                     let b = bw0 * Float(tc[0].b) + bw1 * Float(tc[1].b) + bw2 * Float(tc[2].b)
                     let ip = iy*w + ix
-                    pixels[ip] = Pixel(r: UInt8(r*255), g: UInt8(g*255), b: UInt8(b*255))
+                    frameBuffer[ip] = Pixel(r: UInt8(r*255), g: UInt8(g*255), b: UInt8(b*255))
                 }
             }
         }
@@ -116,14 +233,14 @@ class Renderer {
                 let y_lerp = v1.y + f * dy
                 
                 let idx = Int(y_lerp)*w + Int(x_lerp)
-                pixels[idx] = Pixel(white: 0.5)
+                frameBuffer[idx] = Pixel(white: 0.5)
             }
         }
         
         // projected vertices
         for vp in tp {
             let idx = Int(vp.y)*w + Int(vp.x)
-            pixels[idx] = Pixel(white: 1.0)
+            frameBuffer[idx] = Pixel(white: 1.0)
         }
     }
     
@@ -186,54 +303,7 @@ class Renderer {
             let ry = Int(floor(y * Float(h/3) + Float(h/3)))
             
             let idx = ry*w + rx
-            pixels[idx] = Pixel(white: 1.0)
+            frameBuffer[idx] = Pixel(white: 1.0)
         }
     }
-}
-
-struct Vec3: ExpressibleByArrayLiteral {
-
-    var x, y, z : Float
-    
-    init(_ x: Float, _ y: Float, _ z: Float) {
-        self.x = x
-        self.y = y
-        self.z = z
-    }
-    
-    init(arrayLiteral elements: Float...) {
-        precondition(elements.count == 3)
-        x = elements[0]
-        y = elements[1]
-        z = elements[2]
-    }
-    
-    var len: Float {
-        sqrt(x*x + y*y + z*z)
-    }
-    
-    mutating func norm() {
-        let len = len
-        x /= len
-        y /= len
-        z /= len
-    }
-}
-
-func +(v1: Vec3, v2: Vec3) -> Vec3 {
-    Vec3(v1.x + v2.x,
-         v1.y + v2.y,
-         v1.z + v2.z)
-}
-
-func -(v1: Vec3, v2: Vec3) -> Vec3 {
-    Vec3(v1.x - v2.x,
-         v1.y - v2.y,
-         v1.z - v2.z)
-}
-
-func cross(_ v1: Vec3, _ v2: Vec3) -> Vec3 {
-    Vec3(v1.y * v2.z - v1.z * v2.y,
-         v1.z * v2.x - v1.x * v2.z,
-         v1.x * v2.y - v1.y * v2.x)
 }
