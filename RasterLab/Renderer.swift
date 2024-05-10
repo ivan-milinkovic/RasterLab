@@ -5,45 +5,49 @@ let renderer = Renderer()
 class Renderer {
     
     var frameBuffer: FrameBuffer
+    private var depthBuffer: DepthBuffer
     let w = 200
     let h = 200
+    private let wireframe = true
+    private let showDepthBuffer = false
     
     private var angleY: Float = 0.0
     private var angleX: Float = 0.0
     private let rotationIncrement: Float = 5.0
     
-    private let triangles: [Triangle]
+    private let boxTriangles: [Triangle]
     
     init() {
         frameBuffer = FrameBuffer(w: w, h: h)
+        depthBuffer = DepthBuffer(w: w, h: h)
         
         let url = Bundle.main.url(forResource: "box.obj", withExtension: nil)!
-        triangles = loadObj(url)
+        boxTriangles = loadObj(url)
     }
     
     func render() {
 //        let t0 = Date()
         
-        clearFrameBuffer()
+        frameBuffer.clear()
+        depthBuffer.clear()
+        
 //        renderBox()
 //        renderTriangle()
 //        fillEdges()
 //        renderSingleTriangle()
 //        renderLine()
         
-        for t in triangles {
+        for t in boxTriangles {
             renderTriangle3(t.vs)
         }
 //        renderTriangle3(triangles[0].vs)
         
+        if showDepthBuffer {
+            copyDepthBufferToFrameBuffer()
+        }
+        
 //        let dt = Date().timeIntervalSince(t0)*1_000
 //        print("\(dt)ms")
-    }
-    
-    private func clearFrameBuffer() {
-        for i in 0..<frameBuffer.pixels.count {
-            frameBuffer.pixels[i] = Pixel()
-        }
     }
     
     func renderTriangle3(_ triangle: [Vec3]) {
@@ -94,35 +98,46 @@ class Renderer {
                     let bw1 = w1 / area
                     let bw2 = w2 / area
                     
-                    // set pixel
+                    // Check and update the depth buffer
+                    let z = bw0 * tp[0].z + bw1 * tp[1].z + bw2 * tp[2].z
+                    if z > depthBuffer[ix, iy] {
+                        print("depth buffer, skipping \(ix), \(iy)")
+                        continue
+                    }
+                    depthBuffer[ix, iy] = z
+                    
+                    // Interpolate vertex colors
                     let r = bw0 * Float(tc[0].r) + bw1 * Float(tc[1].r) + bw2 * Float(tc[2].r)
                     let g = bw0 * Float(tc[0].g) + bw1 * Float(tc[1].g) + bw2 * Float(tc[2].g)
                     let b = bw0 * Float(tc[0].b) + bw1 * Float(tc[1].b) + bw2 * Float(tc[2].b)
+                    
                     frameBuffer[ix, iy] = Pixel(r: UInt8(r*255), g: UInt8(g*255), b: UInt8(b*255))
                 }
             }
         }
         
         // draw edges - interpolate between projected vertices
-        for i in 0..<3 {
-            let v1 = tp[i]
-            let v2 = tp[(i+1)%3]
-            
-            let dx = v2.x - v1.x
-            let dy = v2.y - v1.y
-            let dist = sqrt(dx*dx + dy*dy)
-            
-            for step in stride(from: 0.0, through: dist, by: 1.0) {
-                let f = step/dist
-                let x_lerp = Int(v1.x + f * dx)
-                let y_lerp = Int(v1.y + f * dy)
-                frameBuffer[x_lerp, y_lerp] = Pixel(white: 0.5)
+        if wireframe {
+            for i in 0..<3 {
+                let v1 = tp[i]
+                let v2 = tp[(i+1)%3]
+                
+                let dx = v2.x - v1.x
+                let dy = v2.y - v1.y
+                let dist = sqrt(dx*dx + dy*dy)
+                
+                for step in stride(from: 0.0, through: dist, by: 1.0) {
+                    let f = step/dist
+                    let x_lerp = Int(v1.x + f * dx)
+                    let y_lerp = Int(v1.y + f * dy)
+                    frameBuffer[x_lerp, y_lerp] = Pixel(white: 0.5)
+                }
             }
-        }
-        
-        // draw projected vertices
-        for vp in tp {
-            frameBuffer[Int(vp.x), Int(vp.y)] = Pixel(white: 1.0)
+            
+            // draw projected vertices
+            for vp in tp {
+                frameBuffer[Int(vp.x), Int(vp.y)] = Pixel(white: 1.0)
+            }
         }
     }
     
@@ -158,6 +173,16 @@ class Renderer {
     
     func rotateX(clockwise: Bool) {
         angleX += (clockwise ? 1 : -1) * rotationIncrement
+    }
+    
+    func copyDepthBufferToFrameBuffer() {
+        for x in 0..<w {
+            for y in 0..<h {
+                let z = depthBuffer[x,y]
+                let scaledZ = 1 - min(z, 10) / 10 // 1 - x to invert colors, make larger z values map to lower gray values
+                frameBuffer[x,y] = Pixel(white: Double(scaledZ))
+            }
+        }
     }
     
     func renderSingleTriangle() {

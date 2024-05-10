@@ -40,7 +40,7 @@ func loadObj(_ url: URL) -> [Triangle] {
     
     let triangles = vIndices.map { ind in
 //        Triangle(vertices[ind[0]], vertices[ind[1]], vertices[ind[2]])
-        Triangle(vertices[ind[2]], vertices[ind[1]], vertices[ind[0]])
+        Triangle(vertices[ind[2]], vertices[ind[1]], vertices[ind[0]]) // blender vertex order vs my edge function vertex order
     }
     
     return triangles

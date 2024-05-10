@@ -70,6 +70,10 @@ class FrameBuffer {
         self.h = h
     }
     
+    func clear() {
+        self.pixels = [Pixel].init(repeating: Pixel(), count: w*h)
+    }
+    
     subscript(i: Int) -> Pixel {
         get {
             pixels[i]
@@ -81,16 +85,55 @@ class FrameBuffer {
     
     subscript(x: Int, y: Int) -> Pixel {
         get {
+            if x < 0 || w <= x || y < 0 || h <= y {
+                // print("ignoring", x, y)
+                return Pixel()
+            }
             let i = y*w + x
             return pixels[i]
         }
         set {
             if x < 0 || w <= x || y < 0 || h <= y {
-//                print("ignoring", x, y)
+                // print("ignoring", x, y)
                 return
             }
             let i = y*w + x
             pixels[i] = newValue
+        }
+    }
+}
+
+class DepthBuffer {
+    var values: [Float]
+    let w: Int
+    let h: Int
+    
+    init(w: Int, h: Int) {
+        self.values = [Float].init(repeating: Float.greatestFiniteMagnitude, count: w*h)
+        self.w = w
+        self.h = h
+    }
+    
+    func clear() {
+        self.values = [Float].init(repeating: Float.greatestFiniteMagnitude, count: w*h)
+    }
+    
+    subscript(x: Int, y: Int) -> Float {
+        get {
+            if x < 0 || w <= x || y < 0 || h <= y {
+                // print("ignoring", x, y)
+                return Float.greatestFiniteMagnitude
+            }
+            let i = y*w + x
+            return values[i]
+        }
+        set {
+            if x < 0 || w <= x || y < 0 || h <= y {
+                // print("ignoring", x, y)
+                return
+            }
+            let i = y*w + x
+            values[i] = newValue
         }
     }
 }
