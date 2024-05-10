@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2C094A932BEE4E4000DB719C /* ObjLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C094A922BEE4E4000DB719C /* ObjLoader.swift */; };
+		2C094A952BEE4F5E00DB719C /* box.obj in Resources */ = {isa = PBXBuildFile; fileRef = 2C094A942BEE4F5E00DB719C /* box.obj */; };
 		2C4E320B2B8B9D99001DAA5A /* Vec3.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C4E320A2B8B9D99001DAA5A /* Vec3.swift */; };
 		2CA08AE32A632789005E14C5 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CA08AE22A632789005E14C5 /* AppDelegate.swift */; };
 		2CA08AE52A632789005E14C5 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CA08AE42A632789005E14C5 /* ViewController.swift */; };
@@ -30,6 +32,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		2C094A922BEE4E4000DB719C /* ObjLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObjLoader.swift; sourceTree = "<group>"; };
+		2C094A942BEE4F5E00DB719C /* box.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = box.obj; path = data/box.obj; sourceTree = SOURCE_ROOT; };
 		2C4E320A2B8B9D99001DAA5A /* Vec3.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Vec3.swift; sourceTree = "<group>"; };
 		2CA08ADF2A632789005E14C5 /* RasterLab.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RasterLab.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2CA08AE22A632789005E14C5 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -90,10 +94,12 @@
 				2CA08AF12A632824005E14C5 /* Matrix.swift */,
 				2C4E320A2B8B9D99001DAA5A /* Vec3.swift */,
 				2CA08B002A6335A0005E14C5 /* geometry.swift */,
+				2C094A922BEE4E4000DB719C /* ObjLoader.swift */,
 				2CA08B042A633A68005E14C5 /* Images.swift */,
 				2CA08AE62A63278A005E14C5 /* Assets.xcassets */,
 				2CA08AE82A63278A005E14C5 /* Main.storyboard */,
 				2CA08AEB2A63278A005E14C5 /* RasterLab.entitlements */,
+				2C094A942BEE4F5E00DB719C /* box.obj */,
 			);
 			path = RasterLab;
 			sourceTree = "<group>";
@@ -187,6 +193,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2C094A952BEE4F5E00DB719C /* box.obj in Resources */,
 				2CA08AE72A63278A005E14C5 /* Assets.xcassets in Resources */,
 				2CA08AEA2A63278A005E14C5 /* Main.storyboard in Resources */,
 			);
@@ -210,6 +217,7 @@
 				2CA08AE52A632789005E14C5 /* ViewController.swift in Sources */,
 				2CA08B052A633A68005E14C5 /* Images.swift in Sources */,
 				2CA08AE32A632789005E14C5 /* AppDelegate.swift in Sources */,
+				2C094A932BEE4E4000DB719C /* ObjLoader.swift in Sources */,
 				2C4E320B2B8B9D99001DAA5A /* Vec3.swift in Sources */,
 				2CA08B072A633A8B005E14C5 /* Renderer.swift in Sources */,
 				2CA08AF22A632824005E14C5 /* Matrix.swift in Sources */,

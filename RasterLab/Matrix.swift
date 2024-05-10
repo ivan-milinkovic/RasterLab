@@ -44,6 +44,12 @@ struct Mat3 {
         m21, m22, m23,
         m31, m32, m33
         : Float
+    
+    static var identity: Mat3 {
+        Mat3(m11: 1, m12: 0, m13: 0,
+             m21: 0, m22: 1, m23: 0,
+             m31: 0, m32: 0, m33: 1)
+    }
 }
 
 
@@ -54,6 +60,28 @@ func *(v: Vec3, mat: Mat3) -> Vec3 {
     return Vec3(x, y, z)
 }
 
+func mult(_ m1: Mat3, _ m2: Mat3) -> Mat3 {
+    
+    let m11 = m1.m11 * m2.m11  +  m1.m12 * m2.m21  +  m1.m13 * m2.m31
+    let m12 = m1.m11 * m2.m12  +  m1.m12 * m2.m22  +  m1.m13 * m2.m32
+    let m13 = m1.m11 * m2.m13  +  m1.m12 * m2.m23  +  m1.m13 * m2.m33
+    
+    let m21 = m1.m21 * m2.m11  +  m1.m22 * m2.m21  +  m1.m23 * m2.m31
+    let m22 = m1.m21 * m2.m12  +  m1.m22 * m2.m22  +  m1.m23 * m2.m32
+    let m23 = m1.m21 * m2.m13  +  m1.m22 * m2.m23  +  m1.m23 * m2.m33
+    
+    let m31 = m1.m31 * m2.m11  +  m1.m32 * m2.m21  +  m1.m33 * m2.m31
+    let m32 = m1.m31 * m2.m12  +  m1.m32 * m2.m22  +  m1.m33 * m2.m32
+    let m33 = m1.m31 * m2.m13  +  m1.m32 * m2.m23  +  m1.m33 * m2.m33
+    
+    return Mat3(m11: m11, m12: m12, m13: m13,
+                m21: m21, m22: m22, m23: m23,
+                m31: m31, m32: m32, m33: m33)
+}
+
+func *(m1: Mat3, m2: Mat3) -> Mat3 {
+    mult(m1, m2)
+}
 
 //struct Mat4 {
 //    let m: [Float] // row major

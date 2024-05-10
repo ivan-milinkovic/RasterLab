@@ -1,7 +1,7 @@
 import Foundation
 
 struct Vec3: ExpressibleByArrayLiteral {
-
+    
     var x, y, z : Float
     
     init(_ x: Float, _ y: Float, _ z: Float) {
