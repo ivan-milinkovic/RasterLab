@@ -8,6 +8,7 @@ class Renderer {
     private var depthBuffer: DepthBuffer
     let w = 200
     let h = 200
+    private let shade = true
     private let wireframe = true
     private let showDepthBuffer = false
     
@@ -60,7 +61,7 @@ class Renderer {
 
         // Transform to camera space, tv - triangle in view space
         let tv = t.map { v in
-            (v * rotMat) + Vec3(0, 0, 4) // move to the right, as screen coordinates are not centered as NDC, so 0.0 is upper left
+            (v * rotMat) + Vec3(0, 0, 4) // push object into the scene so it's easier to see
         }
         
         // project triangle to screen space
@@ -78,47 +79,52 @@ class Renderer {
             tp.append(vp)
         }
         
-        // fill triangle
-        let area = abs(edgeFunction(tp[0], tp[1], tp[2]))
+        // fill the triangle
         
-        // bounding box
-        let xmin = Int(min(tp[0].x, min(tp[1].x, tp[2].x)))
-        let ymin = Int(min(tp[0].y, min(tp[1].y, tp[2].y)))
-        let xmax = Int(max(tp[0].x, max(tp[1].x, tp[2].x)))
-        let ymax = Int(max(tp[0].y, max(tp[1].y, tp[2].y)))
-        for ix in xmin...xmax {
-            for iy in ymin...ymax {
-                // check if points are inside the triangle
-                let p = Vec3(Float(ix) + 0.5, Float(iy) + 0.5, 0)
-                let w0 = edgeFunction(tp[2], tp[1], p)
-                let w1 = edgeFunction(tp[0], tp[2], p)
-                let w2 = edgeFunction(tp[1], tp[0], p)
-                let isInside = w0>0 && w1>0 && w2>0
-                if isInside {
-                    // barycentric coordinates
-                    let bw0 = w0 / area
-                    let bw1 = w1 / area
-                    let bw2 = w2 / area
+        if shade {
+            let area = abs(edgeFunction(tp[0], tp[1], tp[2]))
+            
+            // bounding box of the triangle
+            let xmin = Int(min(tp[0].x, min(tp[1].x, tp[2].x)))
+            let ymin = Int(min(tp[0].y, min(tp[1].y, tp[2].y)))
+            let xmax = Int(max(tp[0].x, max(tp[1].x, tp[2].x)))
+            let ymax = Int(max(tp[0].y, max(tp[1].y, tp[2].y)))
+            // go through all the pixels in the bounding box
+            for ix in xmin...xmax {
+                for iy in ymin...ymax {
                     
-                    // Check and update the depth buffer
-                    let z = bw0 * tp[0].z + bw1 * tp[1].z + bw2 * tp[2].z
-                    if z > depthBuffer[ix, iy] {
-                        // print("depth buffer, skipping \(ix), \(iy)")
-                        continue
+                    // check if points are inside the triangle
+                    let p = Vec3(Float(ix) + 0.5, Float(iy) + 0.5, 0)
+                    let w0 = edgeFunction(tp[2], tp[1], p)
+                    let w1 = edgeFunction(tp[0], tp[2], p)
+                    let w2 = edgeFunction(tp[1], tp[0], p)
+                    let isInside = w0>0 && w1>0 && w2>0
+                    if isInside {
+                        // barycentric coordinates
+                        let bw0 = w0 / area
+                        let bw1 = w1 / area
+                        let bw2 = w2 / area
+                        
+                        // Check and update the depth buffer
+                        let z = bw0 * tp[0].z + bw1 * tp[1].z + bw2 * tp[2].z
+                        if z >= depthBuffer[ix, iy] {
+                            // print("depth buffer, skipping \(ix), \(iy)")
+                            continue
+                        }
+                        depthBuffer[ix, iy] = z
+                        
+                        // Interpolate vertex colors
+                        let r = bw0 * Float(tc[0].r) + bw1 * Float(tc[1].r) + bw2 * Float(tc[2].r)
+                        let g = bw0 * Float(tc[0].g) + bw1 * Float(tc[1].g) + bw2 * Float(tc[2].g)
+                        let b = bw0 * Float(tc[0].b) + bw1 * Float(tc[1].b) + bw2 * Float(tc[2].b)
+                        
+                        frameBuffer[ix, iy] = Pixel(r: UInt8(r*255), g: UInt8(g*255), b: UInt8(b*255))
                     }
-                    depthBuffer[ix, iy] = z
-                    
-                    // Interpolate vertex colors
-                    let r = bw0 * Float(tc[0].r) + bw1 * Float(tc[1].r) + bw2 * Float(tc[2].r)
-                    let g = bw0 * Float(tc[0].g) + bw1 * Float(tc[1].g) + bw2 * Float(tc[2].g)
-                    let b = bw0 * Float(tc[0].b) + bw1 * Float(tc[1].b) + bw2 * Float(tc[2].b)
-                    
-                    frameBuffer[ix, iy] = Pixel(r: UInt8(r*255), g: UInt8(g*255), b: UInt8(b*255))
                 }
             }
         }
         
-        // draw edges - interpolate between projected vertices
+        // draw edges of the triangle - interpolate between projected vertices
         if wireframe {
             for i in 0..<3 {
                 let v1 = tp[i]
@@ -132,7 +138,15 @@ class Renderer {
                     let f = step/dist
                     let x_lerp = Int(v1.x + f * dx)
                     let y_lerp = Int(v1.y + f * dy)
-                    frameBuffer[x_lerp, y_lerp] = Pixel(white: 0.5)
+                    
+                    // Helper, alternatively all triangles should be shaded first then wireframed, not one by one, because wires get overwritten
+                    let z_lerp = v1.z + f * v2.z-v1.z
+                    if z_lerp >= depthBuffer[x_lerp, y_lerp] {
+                        continue
+                    }
+                    depthBuffer[x_lerp, y_lerp] = z_lerp
+                    
+                    frameBuffer[x_lerp, y_lerp] = Pixel(white: 0.2)
                 }
             }
             
