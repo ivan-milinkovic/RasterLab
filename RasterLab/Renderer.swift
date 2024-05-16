@@ -157,6 +157,8 @@ class Renderer {
         }
     }
     
+    // These matrices rotate around x, y, z which is the world space. (If you look down an axis, then rotation will look like a roll)
+    // Ideally, make a camera, and rotate around the right, up and forward vectors (camera x, y, z)
     private var rotMat: Mat3 {
         let radsInDeg = Float.pi / 180
         
@@ -178,7 +180,7 @@ class Renderer {
                       m31: 0, m32:  sin(ax), m33:  cos(ax))
 //        return Rx
         
-        return Ry * Rx
+        return Rx * Ry
         
 //        return Mat3.identity
     }
