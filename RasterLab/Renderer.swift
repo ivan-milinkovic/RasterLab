@@ -55,10 +55,12 @@ class Renderer {
         let tc = Geo.triangleColors
         let wf = Float(w)
         let hf = Float(h)
+        let wf2 = wf*0.5
+        let hf2 = hf*0.5
 
         // Transform to camera space, tv - triangle in view space
         let tv = t.map { v in
-            (v * rotMat) + Vec3(2, 2, 4) // move to the right, as screen coordinates are not centered as NDC, so 0.0 is upper left
+            (v * rotMat) + Vec3(0, 0, 4) // move to the right, as screen coordinates are not centered as NDC, so 0.0 is upper left
         }
         
         // project triangle to screen space
@@ -69,8 +71,8 @@ class Renderer {
             let y = v.y / z
             let x = v.x / z
             
-            let xp = x*wf*0.98 // + wf*0.1
-            let yp = y*hf*0.98 // + hf*0.1
+            let xp = x*wf2 + wf2
+            let yp = y*hf2 + hf2
             
             let vp = Vec3(xp, yp, z)
             tp.append(vp)
@@ -101,7 +103,7 @@ class Renderer {
                     // Check and update the depth buffer
                     let z = bw0 * tp[0].z + bw1 * tp[1].z + bw2 * tp[2].z
                     if z > depthBuffer[ix, iy] {
-                        print("depth buffer, skipping \(ix), \(iy)")
+                        // print("depth buffer, skipping \(ix), \(iy)")
                         continue
                     }
                     depthBuffer[ix, iy] = z
@@ -145,21 +147,21 @@ class Renderer {
         let radsInDeg = Float.pi / 180
         
 //        let az = 20 * radsInDeg
-//        let Rz = Mat3(m11:  cos(az), m12: sin(az), m13: 0,
-//                      m21: -sin(az), m22: cos(az), m23: 0,
+//        let Rz = Mat3(m11:  cos(az), m12: -sin(az), m13: 0,
+//                      m21:  sin(az), m22:  cos(az), m23: 0,
 //                      m31: 0,        m32: 0,       m33: 1)
 //        return Rz
         
         let ay = angleY * radsInDeg
         let Ry = Mat3(m11: cos(ay), m12: 0, m13: sin(ay),
                       m21: 0,       m22: 1, m23: 0,
-                      m31: sin(ay), m32: 0, m33: cos(ay))
+                      m31: -sin(ay), m32: 0, m33: cos(ay))
 //        return Ry
         
         let ax = angleX * radsInDeg
         let Rx = Mat3(m11: 1, m12:  0,       m13: 0,
-                      m21: 0, m22:  cos(ax), m23: sin(ax),
-                      m31: 0, m32: -sin(ax), m33: cos(ax))
+                      m21: 0, m22:  cos(ax), m23: -sin(ax),
+                      m31: 0, m32:  sin(ax), m33:  cos(ax))
 //        return Rx
         
         return Ry * Rx
