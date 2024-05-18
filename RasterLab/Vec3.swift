@@ -41,6 +41,12 @@ func -(v1: Vec3, v2: Vec3) -> Vec3 {
          v1.z - v2.z)
 }
 
+func dot(_ v1: Vec3, _ v2: Vec3) -> Float {
+      v1.x * v2.x
+    + v1.y * v2.y
+    + v1.z * v2.z
+}
+
 func cross(_ v1: Vec3, _ v2: Vec3) -> Vec3 {
     Vec3(v1.y * v2.z - v1.z * v2.y,
          v1.z * v2.x - v1.x * v2.z,

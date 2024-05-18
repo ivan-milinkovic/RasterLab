@@ -9,22 +9,28 @@ class Renderer {
     let w = 200
     let h = 200
     private let shade = true
-    private let wireframe = true
+    private let wireframe = false
     private let showDepthBuffer = false
     
     private var angleY: Float = 0.0
     private var angleX: Float = 0.0
     private let rotationIncrement: Float = 5.0
     
-    private let boxTriangles: [Triangle]
+    private let meshTriangles: [Triangle]
+    
+    private let lightPos = Vec3(0.25, 0, 0)
+    private var lightDir: Vec3
     
     init() {
         frameBuffer = FrameBuffer(w: w, h: h)
         depthBuffer = DepthBuffer(w: w, h: h)
         
+        lightDir = lightPos
+        lightDir.norm()
+        
 //        let url = Bundle.main.url(forResource: "box.obj", withExtension: nil)!
         let url = Bundle.main.url(forResource: "monkey.obj", withExtension: nil)!
-        boxTriangles = loadObj(url)
+        meshTriangles = loadObj(url)
     }
 
     func render() {
@@ -39,8 +45,8 @@ class Renderer {
 //        renderSingleTriangle()
 //        renderLine()
         
-        for t in boxTriangles {
-            renderTriangle3(t.vertices)
+        for t in meshTriangles {
+            renderTriangle3(t.vertices, t.normals)
         }
 //        renderTriangle3(triangles[0].vs)
         
@@ -52,10 +58,12 @@ class Renderer {
 //        print("\(dt)ms")
     }
     
-    func renderTriangle3(_ triangle: [Vec3]) {
-        let t = triangle
-        let tc = Geo.triangleColors
+    func renderTriangle3(_ triangleVertices: [Vec3], _ triangleNormals: [Vec3]) {
+        let t = triangleVertices
+        let ns = triangleNormals
+//        let tc = Geo.triangleColors
 //        let tc = Geo.grayColors
+        let tc = Geo.whiteColors
         let wf = Float(w)
         let hf = Float(h)
         let wf2 = wf*0.5
@@ -65,6 +73,8 @@ class Renderer {
         let tv = t.map { v in
             (v * rotMat) + Vec3(0, 0, 2) // push object into the scene so it's easier to see
         }
+        // transform normals, rotation only, translation makes no sense, as normals define orientation only, not position
+        let nv = ns.map { $0 * rotMat }
         
         // project triangle to screen space
         var tp = [Vec3]() // triangle projected
@@ -115,10 +125,24 @@ class Renderer {
                         }
                         depthBuffer[ix, iy] = z
                         
+                        // Interpolate normals
+                        let nx = bw0 * Float(nv[0].x) + bw1 * Float(nv[1].x) + bw2 * Float(nv[2].x)
+                        let ny = bw0 * Float(nv[0].y) + bw1 * Float(nv[1].y) + bw2 * Float(nv[2].y)
+                        let nz = bw0 * Float(nv[0].z) + bw1 * Float(nv[1].z) + bw2 * Float(nv[2].z)
+                        var n = Vec3(nx, ny, nz)
+                        n.norm()
+                        
+                        // calculate light
+                        let lightFactor = max(0, dot(n, lightDir))
+                        
                         // Interpolate vertex colors
-                        let r = bw0 * Float(tc[0].r) + bw1 * Float(tc[1].r) + bw2 * Float(tc[2].r)
-                        let g = bw0 * Float(tc[0].g) + bw1 * Float(tc[1].g) + bw2 * Float(tc[2].g)
-                        let b = bw0 * Float(tc[0].b) + bw1 * Float(tc[1].b) + bw2 * Float(tc[2].b)
+                        var r = bw0 * Float(tc[0].r) + bw1 * Float(tc[1].r) + bw2 * Float(tc[2].r)
+                        var g = bw0 * Float(tc[0].g) + bw1 * Float(tc[1].g) + bw2 * Float(tc[2].g)
+                        var b = bw0 * Float(tc[0].b) + bw1 * Float(tc[1].b) + bw2 * Float(tc[2].b)
+                        
+                        r *= lightFactor
+                        g *= lightFactor
+                        b *= lightFactor
                         
                         frameBuffer[ix, iy] = Pixel(r: UInt8(r*255), g: UInt8(g*255), b: UInt8(b*255))
                     }

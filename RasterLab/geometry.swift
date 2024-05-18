@@ -27,6 +27,12 @@ class Geo {
         [0.9, 0.9, 0.9]
     ]
     
+    static let whiteColors: [Pixel] = [
+        [1, 1, 1],
+        [1, 1, 1],
+        [1, 1, 1]
+    ]
+    
     static let box: [Vec3] = [
         [1.0,  1.0, -1.0],
         [1.0,  1.0, -3.0],
