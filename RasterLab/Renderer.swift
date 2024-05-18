@@ -40,7 +40,7 @@ class Renderer {
 //        renderLine()
         
         for t in boxTriangles {
-            renderTriangle3(t.vs)
+            renderTriangle3(t.vertices)
         }
 //        renderTriangle3(triangles[0].vs)
         
