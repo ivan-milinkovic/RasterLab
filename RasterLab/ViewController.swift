@@ -48,6 +48,13 @@ class ViewController: NSViewController {
         render()
     }
     
+    override func mouseDragged(with event: NSEvent) {
+        let dx = event.deltaX
+        let dy = event.deltaY
+        renderer.rotate(dx: Float(dx), dy: Float(dy))
+        render()
+    }
+    
     private func render() {
         renderer.render()
         let img = Images.cgImageSRGB(renderer.frameBuffer.pixels, w: renderer.w, h: renderer.h, pixelSize: 4)

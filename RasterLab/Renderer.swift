@@ -195,6 +195,11 @@ class Renderer {
         angleX += (clockwise ? 1 : -1) * rotationIncrement
     }
     
+    func rotate(dx: Float, dy: Float) {
+        angleX -= dy * 1
+        angleY += dx * 1
+    }
+    
     func copyDepthBufferToFrameBuffer() {
         for x in 0..<w {
             for y in 0..<h {
