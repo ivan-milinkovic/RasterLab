@@ -12,9 +12,10 @@ class Renderer {
     private let wireframe = false
     private let showDepthBuffer = false
     
+    // manual positioning
     private var angleY: Float = 0.0
     private var angleX: Float = 0.0
-    private let rotationIncrement: Float = 5.0
+    private var depthOffset: Float = 4.0
     
     private let meshTriangles: [Triangle]
     
@@ -71,7 +72,7 @@ class Renderer {
 
         // Transform to camera space, tv - triangle in view space
         let tv = t.map { v in
-            (v * rotMat) + Vec3(0, 0, 2) // push object into the scene so it's easier to see
+            (v * rotMat) + Vec3(0, 0, depthOffset) // push object into the scene so it's easier to see
         }
         // transform normals, rotation only, translation makes no sense, as normals define orientation only, not position
         let nv = ns.map { $0 * rotMat }
@@ -212,16 +213,21 @@ class Renderer {
     }
     
     func rotateY(clockwise: Bool) {
-        angleY += (clockwise ? 1 : -1) * rotationIncrement
+        angleY += (clockwise ? 1 : -1) * 5
     }
     
     func rotateX(clockwise: Bool) {
-        angleX += (clockwise ? 1 : -1) * rotationIncrement
+        angleX += (clockwise ? 1 : -1) * 5
     }
     
     func rotate(dx: Float, dy: Float) {
         angleX -= dy * 1
         angleY += dx * 1
+    }
+    
+    func translateDepth(_ dz: Float) {
+        depthOffset = max(depthOffset - 0.5*dz, 2) // anything less than 2 results in division by 0 or extremely large values when projecting
+        depthOffset = min(depthOffset, 20)
     }
     
     func copyDepthBufferToFrameBuffer() {

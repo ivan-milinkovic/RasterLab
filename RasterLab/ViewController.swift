@@ -55,6 +55,12 @@ class ViewController: NSViewController {
         render()
     }
     
+    override func scrollWheel(with event: NSEvent) {
+        let dy = event.deltaY
+        renderer.translateDepth(Float(dy))
+        render()
+    }
+    
     private func render() {
         renderer.render()
         let img = Images.cgImageSRGB(renderer.frameBuffer.pixels, w: renderer.w, h: renderer.h, pixelSize: 4)
