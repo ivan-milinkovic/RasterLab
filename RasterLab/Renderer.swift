@@ -22,10 +22,11 @@ class Renderer {
         frameBuffer = FrameBuffer(w: w, h: h)
         depthBuffer = DepthBuffer(w: w, h: h)
         
-        let url = Bundle.main.url(forResource: "box.obj", withExtension: nil)!
+//        let url = Bundle.main.url(forResource: "box.obj", withExtension: nil)!
+        let url = Bundle.main.url(forResource: "monkey.obj", withExtension: nil)!
         boxTriangles = loadObj(url)
     }
-    
+
     func render() {
 //        let t0 = Date()
         
@@ -54,6 +55,7 @@ class Renderer {
     func renderTriangle3(_ triangle: [Vec3]) {
         let t = triangle
         let tc = Geo.triangleColors
+//        let tc = Geo.grayColors
         let wf = Float(w)
         let hf = Float(h)
         let wf2 = wf*0.5
@@ -61,7 +63,7 @@ class Renderer {
 
         // Transform to camera space, tv - triangle in view space
         let tv = t.map { v in
-            (v * rotMat) + Vec3(0, 0, 4) // push object into the scene so it's easier to see
+            (v * rotMat) + Vec3(0, 0, 2) // push object into the scene so it's easier to see
         }
         
         // project triangle to screen space
@@ -146,13 +148,13 @@ class Renderer {
                     }
                     depthBuffer[x_lerp, y_lerp] = z_lerp
                     
-                    frameBuffer[x_lerp, y_lerp] = Pixel(white: 0.2)
+                    frameBuffer[x_lerp, y_lerp] = Pixel(white: 0.4)
                 }
             }
             
             // draw projected vertices
             for vp in tp {
-                frameBuffer[Int(vp.x), Int(vp.y)] = Pixel(white: 1.0)
+                frameBuffer[Int(vp.x), Int(vp.y)] = Pixel(white: 0.3)
             }
         }
     }
