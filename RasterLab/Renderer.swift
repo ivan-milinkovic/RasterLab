@@ -8,9 +8,9 @@ class Renderer {
     private var depthBuffer: DepthBuffer
     let w = 640
     let h = 480
-    private let shade = true
-    private let wireframe = false
-    private let showDepthBuffer = false
+    var shade = true
+    var wireframe = false
+    var showDepthBuffer = false
     
     // manual positioning
     private var angleY: Float = 0.0
@@ -213,14 +213,6 @@ class Renderer {
         return Rx * Ry
         
 //        return Mat3.identity
-    }
-    
-    func rotateY(clockwise: Bool) {
-        angleY += (clockwise ? 1 : -1) * 5
-    }
-    
-    func rotateX(clockwise: Bool) {
-        angleX += (clockwise ? 1 : -1) * 5
     }
     
     func rotate(dx: Float, dy: Float) {

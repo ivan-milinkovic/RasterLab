@@ -11,6 +11,7 @@ class ViewController: NSViewController {
 
     @IBOutlet weak var imageView: NSImageView!
     @IBOutlet weak var infoLabel: NSTextField!
+    @IBOutlet weak var infoLabel2: NSTextField!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -19,23 +20,21 @@ class ViewController: NSViewController {
 //        imageView.layer?.borderWidth = 1
 //        imageView.layer?.borderColor = NSColor.purple.cgColor
         
+        infoLabel2.stringValue = "Commands: S - shading, W - wireframe, D - Show Depth Buffer"
+        
         NSEvent.addLocalMonitorForEvents(matching: .keyDown) { [weak self] event in
             guard let char = event.characters?.first else { return event }
             switch char {
-            case "a":
-                renderer.rotateY(clockwise: false)
-                self?.render()
-                return nil
             case "d":
-                renderer.rotateY(clockwise: true)
+                renderer.showDepthBuffer.toggle()
                 self?.render()
                 return nil
             case "w":
-                renderer.rotateX(clockwise: false)
+                renderer.wireframe.toggle()
                 self?.render()
                 return nil
             case "s":
-                renderer.rotateX(clockwise: true)
+                renderer.shade.toggle()
                 self?.render()
                 return nil
             default:
@@ -66,6 +65,7 @@ class ViewController: NSViewController {
         renderer.render()
         let img = Images.cgImageSRGB(renderer.frameBuffer.pixels, w: renderer.w, h: renderer.h, pixelSize: 4)
         imageView.image = NSImage(cgImage: img, size: NSSize(width: renderer.w, height: renderer.h))
+        
         let info = String(format: "frame time: %.2fms, would be: %dfps, %dx%dpx",
                           renderer.lastRenderTimeMs,
                           Int(1000/renderer.lastRenderTimeMs),
