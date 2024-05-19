@@ -232,7 +232,7 @@ class Renderer {
         for x in 0..<w {
             for y in 0..<h {
                 let z = depthBuffer[x,y]
-                let scaledZ = 1 - min(z, 10) / 10 // 1 - x to invert colors, make larger z values map to lower gray values
+                let scaledZ = 1 - (min(z, 10) / 10) // 1 - x to invert colors, make larger z values map to lower gray values
                 frameBuffer[x,y] = Pixel(white: Double(scaledZ))
             }
         }
