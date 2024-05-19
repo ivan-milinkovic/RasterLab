@@ -20,7 +20,7 @@ class ViewController: NSViewController {
 //        imageView.layer?.borderWidth = 1
 //        imageView.layer?.borderColor = NSColor.purple.cgColor
         
-        infoLabel2.stringValue = "Commands: S - shading, W - wireframe, D - Show Depth Buffer"
+        infoLabel2.stringValue = "Toggles: S - shading, W - wireframe, D - Show Depth Buffer"
         
         NSEvent.addLocalMonitorForEvents(matching: .keyDown) { [weak self] event in
             guard let char = event.characters?.first else { return event }

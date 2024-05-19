@@ -10,7 +10,10 @@ class Renderer {
     let h = 480
     var shade = true
     var wireframe = false
-    var showDepthBuffer = false
+    var showDepthBuffer = false {
+        didSet { shade = true }
+    }
+    private let useDepthBufferForWireframe = true
     
     // manual positioning
     private var angleY: Float = 0.0
@@ -169,12 +172,14 @@ class Renderer {
                     let x_lerp = Int(v1.x + f * dx)
                     let y_lerp = Int(v1.y + f * dy)
                     
-                    // Helper, alternatively all triangles should be shaded first then wireframed, not one by one, because wires get overwritten
-                    let z_lerp = v1.z + f * v2.z-v1.z
-                    if z_lerp >= depthBuffer[x_lerp, y_lerp] {
-                        continue
+                    if useDepthBufferForWireframe {
+                        // Helper, alternatively all triangles should be shaded first then wireframed, not one by one, because wires get overwritten
+                        let z_lerp = v1.z + f * v2.z-v1.z
+                        if z_lerp >= depthBuffer[x_lerp, y_lerp] {
+                            continue
+                        }
+                        depthBuffer[x_lerp, y_lerp] = z_lerp
                     }
-                    depthBuffer[x_lerp, y_lerp] = z_lerp
                     
                     frameBuffer[x_lerp, y_lerp] = Pixel(white: 0.4)
                 }
