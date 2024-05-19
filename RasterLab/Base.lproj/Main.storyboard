@@ -710,21 +710,35 @@
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
                             <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="hfw-DP-MC1">
-                                <rect key="frame" x="118" y="20" width="340" height="340"/>
+                                <rect key="frame" x="133" y="50" width="310" height="310"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="hfw-DP-MC1" secondAttribute="height" multiplier="1:1" id="X1k-7j-VSI"/>
                                 </constraints>
                                 <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyUpOrDown" id="N1n-Qu-Kti"/>
                             </imageView>
+                            <textField focusRingType="none" horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="0CX-II-CeF">
+                                <rect key="frame" x="18" y="20" width="204" height="16"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="200" id="pF3-mi-idb"/>
+                                </constraints>
+                                <textFieldCell key="cell" lineBreakMode="clipping" title="Label" id="wQW-gH-rB8">
+                                    <font key="font" metaFont="system"/>
+                                    <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
+                            </textField>
                         </subviews>
                         <constraints>
                             <constraint firstItem="hfw-DP-MC1" firstAttribute="centerX" secondItem="m2S-Jp-Qdl" secondAttribute="centerX" id="0wD-dK-dSG"/>
-                            <constraint firstAttribute="bottom" secondItem="hfw-DP-MC1" secondAttribute="bottom" constant="20" symbolic="YES" id="5Uo-VR-36A"/>
+                            <constraint firstAttribute="bottom" secondItem="hfw-DP-MC1" secondAttribute="bottom" constant="50" id="5Uo-VR-36A"/>
+                            <constraint firstItem="0CX-II-CeF" firstAttribute="leading" secondItem="m2S-Jp-Qdl" secondAttribute="leading" constant="20" symbolic="YES" id="6aW-Dx-hhG"/>
                             <constraint firstItem="hfw-DP-MC1" firstAttribute="top" secondItem="m2S-Jp-Qdl" secondAttribute="top" constant="20" id="WYT-nn-A07"/>
+                            <constraint firstAttribute="bottom" secondItem="0CX-II-CeF" secondAttribute="bottom" constant="20" symbolic="YES" id="wWb-EE-qyG"/>
                         </constraints>
                     </view>
                     <connections>
                         <outlet property="imageView" destination="hfw-DP-MC1" id="D7L-wd-s2T"/>
+                        <outlet property="infoLabel" destination="0CX-II-CeF" id="OUZ-JH-eE4"/>
                     </connections>
                 </viewController>
                 <customObject id="rPt-NT-nkU" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>

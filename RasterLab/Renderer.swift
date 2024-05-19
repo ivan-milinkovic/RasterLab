@@ -6,8 +6,8 @@ class Renderer {
     
     var frameBuffer: FrameBuffer
     private var depthBuffer: DepthBuffer
-    let w = 200
-    let h = 200
+    let w = 400
+    let h = 300
     private let shade = true
     private let wireframe = false
     private let showDepthBuffer = false
@@ -22,6 +22,8 @@ class Renderer {
     private let lightPos = Vec3(0.25, 0, 0)
     private var lightDir: Vec3
     
+    var lastRenderTimeMs: Double = 0.0
+    
     init() {
         frameBuffer = FrameBuffer(w: w, h: h)
         depthBuffer = DepthBuffer(w: w, h: h)
@@ -35,7 +37,7 @@ class Renderer {
     }
 
     func render() {
-//        let t0 = Date()
+        let t0 = Date()
         
         frameBuffer.clear()
         depthBuffer.clear()
@@ -55,8 +57,8 @@ class Renderer {
             copyDepthBufferToFrameBuffer()
         }
         
-//        let dt = Date().timeIntervalSince(t0)*1_000
-//        print("\(dt)ms")
+        lastRenderTimeMs = Date().timeIntervalSince(t0)*1_000
+//        print("\(lastRenderTime)ms")
     }
     
     func renderTriangle3(_ triangleVertices: [Vec3], _ triangleNormals: [Vec3]) {

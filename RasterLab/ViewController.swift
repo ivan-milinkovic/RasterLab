@@ -10,6 +10,7 @@ import Cocoa
 class ViewController: NSViewController {
 
     @IBOutlet weak var imageView: NSImageView!
+    @IBOutlet weak var infoLabel: NSTextField!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -65,6 +66,7 @@ class ViewController: NSViewController {
         renderer.render()
         let img = Images.cgImageSRGB(renderer.frameBuffer.pixels, w: renderer.w, h: renderer.h, pixelSize: 4)
         imageView.image = NSImage(cgImage: img, size: NSSize(width: renderer.w, height: renderer.h))
+        infoLabel.stringValue = String(format: "%.2fms, would be: %dfps", renderer.lastRenderTimeMs, Int(1000/renderer.lastRenderTimeMs))
     }
     
 }
