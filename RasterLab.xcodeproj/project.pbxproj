@@ -10,6 +10,7 @@
 		2C094A932BEE4E4000DB719C /* ObjLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C094A922BEE4E4000DB719C /* ObjLoader.swift */; };
 		2C094A952BEE4F5E00DB719C /* box.obj in Resources */ = {isa = PBXBuildFile; fileRef = 2C094A942BEE4F5E00DB719C /* box.obj */; };
 		2C0B2B142BF735E3001CD21C /* monkey.obj in Resources */ = {isa = PBXBuildFile; fileRef = 2C0B2B132BF735E3001CD21C /* monkey.obj */; };
+		2C0B2B162BF9F6D8001CD21C /* Renderer+Test.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C0B2B152BF9F6D8001CD21C /* Renderer+Test.swift */; };
 		2C4E320B2B8B9D99001DAA5A /* Vec3.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C4E320A2B8B9D99001DAA5A /* Vec3.swift */; };
 		2CA08AE32A632789005E14C5 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CA08AE22A632789005E14C5 /* AppDelegate.swift */; };
 		2CA08AE52A632789005E14C5 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CA08AE42A632789005E14C5 /* ViewController.swift */; };
@@ -37,6 +38,7 @@
 		2C094A942BEE4F5E00DB719C /* box.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = box.obj; path = data/box.obj; sourceTree = SOURCE_ROOT; };
 		2C094A962BEE901300DB719C /* wip.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = wip.md; sourceTree = "<group>"; };
 		2C0B2B132BF735E3001CD21C /* monkey.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = monkey.obj; path = data/monkey.obj; sourceTree = SOURCE_ROOT; };
+		2C0B2B152BF9F6D8001CD21C /* Renderer+Test.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Renderer+Test.swift"; sourceTree = "<group>"; };
 		2C4E320A2B8B9D99001DAA5A /* Vec3.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Vec3.swift; sourceTree = "<group>"; };
 		2CA08ADF2A632789005E14C5 /* RasterLab.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RasterLab.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2CA08AE22A632789005E14C5 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -95,6 +97,7 @@
 				2CA08AE22A632789005E14C5 /* AppDelegate.swift */,
 				2CA08AE42A632789005E14C5 /* ViewController.swift */,
 				2CA08B062A633A8B005E14C5 /* Renderer.swift */,
+				2C0B2B152BF9F6D8001CD21C /* Renderer+Test.swift */,
 				2CA08AF12A632824005E14C5 /* Matrix.swift */,
 				2C4E320A2B8B9D99001DAA5A /* Vec3.swift */,
 				2CA08B002A6335A0005E14C5 /* geometry.swift */,
@@ -225,6 +228,7 @@
 				2CA08AE32A632789005E14C5 /* AppDelegate.swift in Sources */,
 				2C094A932BEE4E4000DB719C /* ObjLoader.swift in Sources */,
 				2C4E320B2B8B9D99001DAA5A /* Vec3.swift in Sources */,
+				2C0B2B162BF9F6D8001CD21C /* Renderer+Test.swift in Sources */,
 				2CA08B072A633A8B005E14C5 /* Renderer.swift in Sources */,
 				2CA08AF22A632824005E14C5 /* Matrix.swift in Sources */,
 			);
