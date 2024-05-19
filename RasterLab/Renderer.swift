@@ -69,6 +69,7 @@ class Renderer {
         let hf = Float(h)
         let wf2 = wf*0.5
         let hf2 = hf*0.5
+        let aspect = wf/hf
 
         // Transform to camera space, tv - triangle in view space
         let tv = t.map { v in
@@ -83,7 +84,7 @@ class Renderer {
         for v in tv {
             let z = v.z
             let y = v.y / z
-            let x = v.x / z
+            let x = v.x / z / aspect
             
             let xp = x*wf2 + wf2
             let yp = y*hf2 + hf2
