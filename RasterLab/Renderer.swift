@@ -15,7 +15,7 @@ class Renderer {
     
     // manual positioning
     private var angleY: Float = 0.0
-    private var angleX: Float = 0.0
+    private var angleX: Float = 90.0
     private var depthOffset: Float = 4.0
     
     private let meshTriangles: [Triangle]
